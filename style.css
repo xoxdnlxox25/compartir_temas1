@@ -1,25 +1,35 @@
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
-  background: #f4f4f4;
+  background: #121212; /* fondo oscuro */
+  color: #ffffff;       /* texto claro */
 }
 
 #botones-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
+  padding-right: 20px;
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #00a884;
-  color: white;
-  border: none;
+  padding: 12px 20px;
+  background-color: #1e1e1e; /* fondo oscuro del botón */
+  color: #ffffff; /* ✅ texto blanco */
+  border: 1px solid #00a884;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  text-align: left;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 5px rgba(0, 168, 132, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* separación entre ícono y texto */
 }
+
 
 button:hover {
   background-color: #00795c;
@@ -28,8 +38,86 @@ button:hover {
 #descripcion {
   margin-top: 20px;
   font-size: 18px;
-  background-color: white;
+  background-color: #1e1e1e; /* fondo oscuro para la caja */
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* sombra clara */
+}
+
+/* Estilo del título principal */
+h1 {
+  color: #00d6b2;
+  text-align: center;
+  margin-bottom: 30px;
+}
+#menu-lateral {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  background-color: #1e1e1e;
+  padding-top: 80px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+#menu-lateral ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#menu-lateral li {
+  margin: 20px 0;
+}
+
+#menu-lateral a {
+  color: #00d6b2;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#menu-lateral a:hover {
+  background-color: #333;
+}
+
+#contenido-principal {
+  margin-left: 220px;
+  padding-top: 20px;
+}
+#menu-lateral a {
+  color: #00d6b2;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: #1e1e1e;
+}
+
+#menu-lateral a.active {
+  background-color: #00d6b2;
+  color: #121212;
+}
+
+#menu-lateral a:hover {
+  background-color: #333;
+}
+button:active {
+  transform: scale(0.98);
+  background-color: #009f77;
+}
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-container img {
+  width: 100px;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 50%;
 }
