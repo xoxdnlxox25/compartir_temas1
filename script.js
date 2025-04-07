@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec"; // Pega aquí la URL del Apps Script
+  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec"; // Reemplaza por tu URL de Apps Script
 
   const container = document.getElementById("botones-container");
   const descripcion = document.getElementById("descripcion");
@@ -41,7 +41,11 @@ document.addEventListener("DOMContentLoaded", function () {
     estudio.temas.forEach((tema, index) => {
       const btn = document.createElement("button");
       btn.textContent = `${index + 1}.- ${tema.titulo}`;
-      btn.onclick = () => window.open(tema.url, "_blank");
+      btn.onclick = () => {
+        const mensaje = `📖 *${tema.titulo}*%0A🔗 ${tema.url}`;
+        const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
+        window.open(enlaceWhatsApp, "_blank");
+      };
       container.appendChild(btn);
     });
 
@@ -63,7 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (tema.titulo && tema.url) {
           const btn = document.createElement("button");
           btn.textContent = `${total++}.- ${tema.titulo}`;
-          btn.onclick = () => window.open(tema.url, "_blank");
+          btn.onclick = () => {
+            const mensaje = `📖 *${tema.titulo}*%0A🔗 ${tema.url}`;
+            const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
+            window.open(enlaceWhatsApp, "_blank");
+          };
           container.appendChild(btn);
         }
       });
@@ -95,4 +103,3 @@ document.addEventListener("DOMContentLoaded", function () {
   activarMenu(btnEstudios);
   cargarDatos(mostrarEstudios);
 });
-
