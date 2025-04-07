@@ -1,56 +1,98 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const apiUrl = "https://script.google.com/macros/s/AKfycbwaw60UOlVXT9pfv2PXwqoO5650WV7nnSNTYfDWAnmiyEWu3k7zGpQYlAUfmfbzXmdW/exec";
+  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec"; // Pega aquí la URL del Apps Script
 
   const container = document.getElementById("botones-container");
   const descripcion = document.getElementById("descripcion");
   const btnEstudios = document.getElementById("btn-estudios");
   const btnRespuestas = document.getElementById("btn-respuestas");
-  const menuLinks = document.querySelectorAll("#menu-lateral a");
+  const menuLinks = document.querySelectorAll(".opcion-menu");
 
-  // 👉 Lógica de botones (Estudios)
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      data.forEach((item) => {
-        let button = document.createElement("button");
-        button.innerHTML = `<i class="fas fa-book"></i> ${item.nombre}`;
+  let estudios = [];
 
-
-        button.onclick = () => {
-          let mensaje = `📌 *${item.nombre}*%0A📖 ${item.descripcion}`;
-          let urlWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
-          window.open(urlWhatsApp, "_blank");
-        };
-
-        container.appendChild(button);
+  function cargarDatos(callback) {
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        estudios = data;
+        if (typeof callback === "function") callback();
+      })
+      .catch(err => {
+        descripcion.innerHTML = "❌ Error al cargar datos.";
+        console.error(err);
       });
-    })
-    .catch((error) => {
-      console.error("Error al obtener los datos:", error);
+  }
+
+  function mostrarEstudios() {
+    descripcion.innerHTML = "<h2>Estudios disponibles</h2>";
+    container.innerHTML = "";
+
+    estudios.forEach(est => {
+      const btn = document.createElement("button");
+      btn.textContent = est.titulo;
+      btn.onclick = () => mostrarTemas(est);
+      container.appendChild(btn);
+    });
+  }
+
+  function mostrarTemas(estudio) {
+    descripcion.innerHTML = `<h2>${estudio.titulo}</h2>`;
+    container.innerHTML = "";
+
+    estudio.temas.forEach((tema, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = `${index + 1}.- ${tema.titulo}`;
+      btn.onclick = () => window.open(tema.url, "_blank");
+      container.appendChild(btn);
     });
 
-  // 👉 Función para activar el menú visualmente
+    const volverBtn = document.createElement("button");
+    volverBtn.textContent = "← Volver";
+    volverBtn.className = "volver-btn";
+    volverBtn.onclick = mostrarEstudios;
+    container.appendChild(volverBtn);
+  }
+
+  function mostrarTodasLasRespuestas() {
+    descripcion.innerHTML = "<h2>Respuestas disponibles</h2>";
+    container.innerHTML = "";
+
+    let total = 1;
+
+    estudios.forEach(est => {
+      est.temas.forEach(tema => {
+        if (tema.titulo && tema.url) {
+          const btn = document.createElement("button");
+          btn.textContent = `${total++}.- ${tema.titulo}`;
+          btn.onclick = () => window.open(tema.url, "_blank");
+          container.appendChild(btn);
+        }
+      });
+    });
+
+    if (total === 1) {
+      container.innerHTML = "<p>No hay respuestas disponibles.</p>";
+    }
+  }
+
   function activarMenu(actual) {
     menuLinks.forEach(link => link.classList.remove("active"));
     actual.classList.add("active");
   }
 
-  // 👉 Mostrar botones (Estudios)
   btnEstudios.addEventListener("click", function (e) {
     e.preventDefault();
-    container.style.display = "flex";
-    descripcion.textContent = "LUMBRERA PLUS 2025"; // Limpia cualquier contenido de respuestas
     activarMenu(this);
+    mostrarEstudios();
   });
 
-  // 👉 Ocultar botones y mostrar algo (Respuestas)
   btnRespuestas.addEventListener("click", function (e) {
     e.preventDefault();
-    container.style.display = "none";
-    descripcion.textContent = "Aquí aparecerán las respuestas o el contenido relacionado."; // o lo que quieras mostrar
     activarMenu(this);
+    mostrarTodasLasRespuestas();
   });
 
-  // 👉 Activar "Estudios" por defecto al cargar
+  // Al iniciar
   activarMenu(btnEstudios);
+  cargarDatos(mostrarEstudios);
 });
+
