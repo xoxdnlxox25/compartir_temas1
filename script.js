@@ -1,124 +1,106 @@
-/* Fondo y cuerpo general */
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #1e1e1e;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  color: #f1f1f1;
-}
+document.addEventListener("DOMContentLoaded", function () {
+  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec"; // Reemplaza por tu URL de Apps Script
 
-/* Header fijo arriba con sombra */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: #111;
-  z-index: 1000;
-  padding: 1rem 0 1.5rem 0;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
-}
+  const container = document.getElementById("botones-container");
+  const descripcion = document.getElementById("descripcion");
+  const btnEstudios = document.getElementById("btn-estudios");
+  const btnRespuestas = document.getElementById("btn-respuestas");
+  const menuLinks = document.querySelectorAll(".opcion-menu");
 
-/* Título principal */
-h1 {
-  color: #c49b0f;
-  font-size: 1.8rem;
-  margin: 0;
-  font-weight: bold;
-}
+  let estudios = [];
 
-/* Contenedor de botones superiores */
-#menu-superior {
-  margin-top: 1rem;
-}
+  function cargarDatos(callback) {
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        estudios = data;
+        if (typeof callback === "function") callback();
+      })
+      .catch(err => {
+        descripcion.innerHTML = "❌ Error al cargar datos.";
+        console.error(err);
+      });
+  }
 
-/* Botones de menú: Estudios / Respuestas */
-.opcion-menu {
-  padding: 0.7rem 1.5rem;
-  margin: 0 5px;
-  border: 2px solid #c49b0f;
-  background-color: #2a2a2a;
-  color: #c49b0f;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-}
+  function mostrarEstudios() {
+    descripcion.innerHTML = "<h2>Estudios disponibles</h2>";
+    container.innerHTML = "";
 
-.opcion-menu.active {
-  background-color: #c49b0f;
-  color: #1e1e1e;
-}
+    estudios.forEach(est => {
+      const btn = document.createElement("button");
+      btn.textContent = est.titulo;
+      btn.onclick = () => mostrarTemas(est);
+      container.appendChild(btn);
+    });
+  }
 
-.opcion-menu:hover {
-  background-color: #333;
-  color: #ffffff;
-  border-color: #dcb642;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
-}
+  function mostrarTemas(estudio) {
+    descripcion.innerHTML = `<h2>${estudio.titulo}</h2>`;
+    container.innerHTML = "";
 
-.opcion-menu:active {
-  transform: scale(0.97);
-}
+    estudio.temas.forEach((tema, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = `${index + 1}.- ${tema.titulo}`;
+      btn.onclick = () => {
+        const mensaje = `📖 *${tema.titulo}*%0A🔗 ${tema.url}`;
+        const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
+        window.open(enlaceWhatsApp, "_blank");
+      };
+      container.appendChild(btn);
+    });
 
-/* Separación del contenido para no quedar oculto bajo el header */
-#contenido-principal {
-  padding-top: 160px;
-}
+    const volverBtn = document.createElement("button");
+    volverBtn.textContent = "← Volver";
+    volverBtn.className = "volver-btn";
+    volverBtn.onclick = mostrarEstudios;
+    container.appendChild(volverBtn);
+  }
 
-/* Título o descripción debajo del header */
-#descripcion {
-  margin: 1rem;
-  font-size: 1.2rem;
-}
+  function mostrarTodasLasRespuestas() {
+    descripcion.innerHTML = "<h2>Respuestas disponibles</h2>";
+    container.innerHTML = "";
 
-/* Contenedor de botones de estudio/tema */
-#botones-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 1rem;
-}
+    let total = 1;
 
-/* Botones generales de estudios o temas */
-button {
-  padding: 0.9rem 1.6rem;
-  font-size: 1rem;
-  border: 2px solid #c49b0f;
-  border-radius: 10px;
-  background-color: #2a2a2a;
-  color: white;
-  cursor: pointer;
-  width: 90%;
-  max-width: 450px;
-  transition: all 0.25s ease;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-}
+    estudios.forEach(est => {
+      est.temas.forEach(tema => {
+        if (tema.titulo && tema.url) {
+          const btn = document.createElement("button");
+          btn.textContent = `${total++}.- ${tema.titulo}`;
+          btn.onclick = () => {
+            const mensaje = `📖 *${tema.titulo}*%0A🔗 ${tema.url}`;
+            const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
+            window.open(enlaceWhatsApp, "_blank");
+          };
+          container.appendChild(btn);
+        }
+      });
+    });
 
-button:hover {
-  background-color: #3b3b3b;
-  border-color: #dcb642;
-  color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
-}
+    if (total === 1) {
+      container.innerHTML = "<p>No hay respuestas disponibles.</p>";
+    }
+  }
 
-button:active {
-  transform: scale(0.97);
-}
+  function activarMenu(actual) {
+    menuLinks.forEach(link => link.classList.remove("active"));
+    actual.classList.add("active");
+  }
 
-/* Botón para volver */
-.volver-btn {
-  background-color: #444;
-  border-color: #999;
-  color: #f1f1f1;
-}
+  btnEstudios.addEventListener("click", function (e) {
+    e.preventDefault();
+    activarMenu(this);
+    mostrarEstudios();
+  });
 
-.volver-btn:hover {
-  background-color: #555;
-  border-color: #ccc;
-  color: #fff;
-}
+  btnRespuestas.addEventListener("click", function (e) {
+    e.preventDefault();
+    activarMenu(this);
+    mostrarTodasLasRespuestas();
+  });
+
+  // Al iniciar
+  activarMenu(btnEstudios);
+  cargarDatos(mostrarEstudios);
+});
+
