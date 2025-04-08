@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec"; // Reemplaza por tu URL de Apps Script
+  const apiUrl = "https://script.google.com/macros/s/AKfycbz5l3NkqcfJ2XOaOJw3GRyvkUpptmOM6EpnnisvUzlYOcA_4d4IdGp_X2ZNH8Ozu2osQw/exec";
 
   const container = document.getElementById("botones-container");
   const descripcion = document.getElementById("descripcion");
@@ -27,10 +27,20 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = "";
 
     estudios.forEach(est => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = est.titulo;
+
       const btn = document.createElement("button");
-      btn.textContent = est.titulo;
+      btn.textContent = "Ver temas";
       btn.onclick = () => mostrarTemas(est);
-      container.appendChild(btn);
+
+      card.appendChild(titulo);
+      card.appendChild(btn);
+
+      container.appendChild(card);
     });
   }
 
@@ -39,14 +49,36 @@ document.addEventListener("DOMContentLoaded", function () {
     container.innerHTML = "";
 
     estudio.temas.forEach((tema, index) => {
-      const btn = document.createElement("button");
-      btn.textContent = `${index + 1}.- ${tema.titulo}`;
-      btn.onclick = () => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const titulo = document.createElement("h3");
+      titulo.textContent = `${index + 1}. ${tema.titulo}`;
+
+      const botonesDiv = document.createElement("div");
+      botonesDiv.className = "card-buttons";
+
+      const btnVer = document.createElement("button");
+      btnVer.textContent = "Ver";
+      btnVer.onclick = () => {
+        window.open(tema.url, "_blank");
+      };
+
+      const btnCompartir = document.createElement("button");
+      btnCompartir.textContent = "Compartir";
+      btnCompartir.onclick = () => {
         const mensaje = `📖 *${tema.titulo}*%0A🔗 ${tema.url}`;
         const enlaceWhatsApp = `https://api.whatsapp.com/send?text=${mensaje}`;
         window.open(enlaceWhatsApp, "_blank");
       };
-      container.appendChild(btn);
+
+      botonesDiv.appendChild(btnVer);
+      botonesDiv.appendChild(btnCompartir);
+
+      card.appendChild(titulo);
+      card.appendChild(botonesDiv);
+
+      container.appendChild(card);
     });
 
     const volverBtn = document.createElement("button");
@@ -87,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     actual.classList.add("active");
   }
 
+  // Eventos del menú
   btnEstudios.addEventListener("click", function (e) {
     e.preventDefault();
     activarMenu(this);
@@ -99,8 +132,26 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarTodasLasRespuestas();
   });
 
-  // Al iniciar
+  // 🌙 Modo claro/oscuro
+  const toggleTema = document.getElementById("toggle-tema");
+  const cuerpo = document.body;
+
+  const temaGuardado = localStorage.getItem("tema");
+  if (temaGuardado === "claro") {
+    cuerpo.classList.add("tema-claro");
+    toggleTema.checked = true;
+  }
+
+  toggleTema.addEventListener("change", () => {
+    if (toggleTema.checked) {
+      cuerpo.classList.add("tema-claro");
+      localStorage.setItem("tema", "claro");
+    } else {
+      cuerpo.classList.remove("tema-claro");
+      localStorage.setItem("tema", "oscuro");
+    }
+  });
+
   activarMenu(btnEstudios);
   cargarDatos(mostrarEstudios);
 });
-
