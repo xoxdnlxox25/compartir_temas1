@@ -1,4 +1,4 @@
-/* Fondo y cuerpo general */
+/* Estilos base y generales */
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #1e1e1e;
@@ -8,7 +8,6 @@ body {
   color: #f1f1f1;
 }
 
-/* Header fijo arriba con sombra */
 header {
   position: fixed;
   top: 0;
@@ -20,7 +19,6 @@ header {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Título principal */
 h1 {
   color: #c49b0f;
   font-size: 1.8rem;
@@ -28,12 +26,10 @@ h1 {
   font-weight: bold;
 }
 
-/* Contenedor de botones superiores */
 #menu-superior {
   margin-top: 1rem;
 }
 
-/* Botones de menú: Estudios / Respuestas */
 .opcion-menu {
   padding: 0.7rem 1.5rem;
   margin: 0 5px;
@@ -63,18 +59,15 @@ h1 {
   transform: scale(0.97);
 }
 
-/* Separación del contenido para no quedar oculto bajo el header */
 #contenido-principal {
   padding-top: 160px;
 }
 
-/* Título o descripción debajo del header */
 #descripcion {
   margin: 1rem;
   font-size: 1.2rem;
 }
 
-/* Contenedor de botones de estudio/tema */
 #botones-container {
   display: flex;
   flex-direction: column;
@@ -83,7 +76,47 @@ h1 {
   padding: 1rem;
 }
 
-/* Botones generales de estudios o temas */
+/* Tarjetas */
+.card {
+  background-color: #2a2a2a;
+  border: 2px solid #c49b0f;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 0.5rem;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  text-align: left;
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  color: #f1c40f;
+  font-size: 1.1rem;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.card-buttons button {
+  flex: 1;
+  font-size: 0.95rem;
+  padding: 0.6rem;
+  border-radius: 8px;
+}
+
+/* Botón genérico */
 button {
   padding: 0.9rem 1.6rem;
   font-size: 1rem;
@@ -110,7 +143,6 @@ button:active {
   transform: scale(0.97);
 }
 
-/* Botón para volver */
 .volver-btn {
   background-color: #444;
   border-color: #999;
@@ -123,3 +155,90 @@ button:active {
   color: #fff;
 }
 
+/* Interruptor modo oscuro/claro */
+#modo-toggle {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #888;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #c49b0f;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Tema claro */
+body.tema-claro {
+  background-color: #f4f4f4;
+  color: #222;
+}
+
+.tema-claro header {
+  background-color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tema-claro h1 {
+  color: #c49b0f;
+}
+
+.tema-claro .opcion-menu {
+  background-color: #e0e0e0;
+  color: #c49b0f;
+  border-color: #c49b0f;
+}
+
+.tema-claro .opcion-menu.active {
+  background-color: #c49b0f;
+  color: #ffffff;
+}
+
+.tema-claro button,
+.tema-claro .card {
+  background-color: #ffffff;
+  color: #222;
+  border-color: #c49b0f;
+}
+
+.tema-claro .volver-btn {
+  background-color: #ddd;
+  border-color: #aaa;
+  color: #333;
+}
