@@ -1,4 +1,4 @@
-/* Estilos base y generales */
+/* Estilo base modo oscuro */
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #1e1e1e;
@@ -76,7 +76,6 @@ h1 {
   padding: 1rem;
 }
 
-/* Tarjetas */
 .card {
   background-color: #2a2a2a;
   border: 2px solid #c49b0f;
@@ -116,7 +115,6 @@ h1 {
   border-radius: 8px;
 }
 
-/* Botón genérico */
 button {
   padding: 0.9rem 1.6rem;
   font-size: 1rem;
@@ -154,91 +152,98 @@ button:active {
   border-color: #ccc;
   color: #fff;
 }
-
-/* Interruptor modo oscuro/claro */
-#modo-toggle {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+/* 🔍 Estilo para el buscador */
+#buscador {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  width: 90%;
+  max-width: 460px;
+  border: 2px solid #c49b0f;
+  border-radius: 10px;
+  background-color: #2a2a2a;
+  color: white;
+  margin: 1rem auto;
+  display: block;
+  outline: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
+#buscador:focus {
+  border-color: #f1c40f;
+  background-color: #333;
+  box-shadow: 0 0 10px #c49b0f66;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* 📋 Contenedor de botones */
+#lista-botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
 }
 
-.slider {
-  position: absolute;
+/* 🟨 Botones de preguntas/respuestas */
+#lista-botones button {
+  width: 95%;
+  max-width: 500px;
+  font-size: 0.95rem;
+  background-color: #2a2a2a;
+  color: white;
+  border: 2px solid #c49b0f;
+  border-radius: 10px;
+  padding: 0.9rem;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
   cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  background-color: #888;
-  transition: 0.4s;
-  border-radius: 34px;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 20px; width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
+#lista-botones button:hover {
+  background-color: #3b3b3b;
+  border-color: #f1c40f;
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
 }
 
-input:checked + .slider {
-  background-color: #c49b0f;
+#lista-botones button:active {
+  transform: scale(0.98);
+}
+/* 💬 Detalle tipo formulario */
+.detalle-item {
+  margin-bottom: 1.4rem;
+  text-align: left;
+  max-width: 600px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.6rem 1rem;
+  background-color: #1a1a1a;
+  border-left: 5px solid #c49b0f;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-input:checked + .slider:before {
-  transform: translateX(22px);
+.detalle-item strong {
+  display: block;
+  color: #f1c40f;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
 }
 
-/* Tema claro */
-body.tema-claro {
-  background-color: #f4f4f4;
-  color: #222;
+.detalle-item p {
+  margin: 0;
+  padding-left: 0.4rem;
+  color: #f1f1f1;
+  opacity: 0.95;
 }
 
-.tema-claro header {
-  background-color: #ffffff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-}
-
-.tema-claro h1 {
-  color: #c49b0f;
-}
-
-.tema-claro .opcion-menu {
-  background-color: #e0e0e0;
-  color: #c49b0f;
-  border-color: #c49b0f;
-}
-
-.tema-claro .opcion-menu.active {
-  background-color: #c49b0f;
-  color: #ffffff;
-}
-
-.tema-claro button,
-.tema-claro .card {
-  background-color: #ffffff;
-  color: #222;
-  border-color: #c49b0f;
-}
-
-.tema-claro .volver-btn {
-  background-color: #ddd;
-  border-color: #aaa;
-  color: #333;
+/* 📊 Puntuación especial */
+.detalle-puntuacion {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #00ffae;
+  text-align: center;
+  margin-bottom: 2rem;
 }
