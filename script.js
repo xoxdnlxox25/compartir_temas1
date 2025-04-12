@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const apiUrl = "https://script.google.com/macros/s/AKfycbwM0m3XYZSbwgTUgSQnnZbi-qgHeLjFoiF0gdp2PoPrBvlhAyEzhKClWzDxh2Gso6NkyA/exec";
+  const apiUrl = "https://script.google.com/macros/s/AKfycbwM0m3XYZSbwgTUgSQnnZbi-qgHeLjFoiF0gdp2PoPrBvlhAyEzhKClWzDxh2Gso6NkyA/exec"; // Reemplaza con tu URL real
 
   const container = document.getElementById("botones-container");
   const descripcion = document.getElementById("descripcion");
@@ -278,4 +278,111 @@ document.addEventListener("DOMContentLoaded", function () {
     resultado.push(actual);
     return resultado;
   }
+
+  // 👥 Gestión de estudiantes
+  const modal = document.getElementById("modal-estudiantes");
+  const abrirModalBtn = document.getElementById("abrir-modal");
+  const cerrarModalBtn = document.getElementById("cerrar-modal");
+  const formEstudiante = document.getElementById("form-estudiante");
+  const listaEstudiantes = document.getElementById("lista-estudiantes");
+  const inputNombre = document.getElementById("nombre-estudiante");
+
+  let estudiantes = JSON.parse(localStorage.getItem("estudiantes")) || [];
+
+  function guardarEstudiantes() {
+    localStorage.setItem("estudiantes", JSON.stringify(estudiantes));
+  }
+
+  function renderizarEstudiantes() {
+    listaEstudiantes.innerHTML = "";
+
+    estudiantes.forEach((est, index) => {
+      const div = document.createElement("div");
+      div.className = "estudiante-item";
+
+      const select = document.createElement("select");
+      select.innerHTML = `<option value="">Selecciona un estudio</option>`;
+      datos.hoja1.forEach(estudio => {
+        estudio.temas.forEach(tema => {
+          const titulo = `${estudio.titulo} - ${tema.titulo}`;
+          select.innerHTML += `<option value="${tema.url}">${titulo}</option>`;
+        });
+      });
+
+      const btnCompartir = document.createElement("button");
+      btnCompartir.textContent = "📤 Compartir";
+      btnCompartir.onclick = () => {
+        const urlSeleccionado = select.value;
+        if (!urlSeleccionado) {
+          alert("⚠️ Debes seleccionar un estudio.");
+          return;
+        }
+
+        const nombreEstudio = select.options[select.selectedIndex].text;
+        const mensaje = `📖 Hola ${est.nombre}, aquí tienes un nuevo estudio bíblico:\n*${nombreEstudio}*\n🔗 ${urlSeleccionado}`;
+        const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, "_blank");
+
+        estudiantes[index].contador += 1;
+        guardarEstudiantes();
+        renderizarEstudiantes();
+      };
+
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "🗑️ Eliminar";
+      btnEliminar.className = "volver-btn";
+      btnEliminar.onclick = () => {
+        if (confirm("¿Eliminar este estudiante?")) {
+          estudiantes.splice(index, 1);
+          guardarEstudiantes();
+          renderizarEstudiantes();
+        }
+      };
+
+      div.innerHTML = `
+        <strong>👤 ${est.nombre}</strong><br>
+        🗓️ Registrado: ${est.fecha}<br>
+        📊 Estudios compartidos: ${est.contador || 0}
+      `;
+
+      const botonesDiv = document.createElement("div");
+      botonesDiv.className = "estudiante-botones";
+      botonesDiv.appendChild(select);
+      botonesDiv.appendChild(btnCompartir);
+      botonesDiv.appendChild(btnEliminar);
+
+      div.appendChild(botonesDiv);
+      listaEstudiantes.appendChild(div);
+    });
+  }
+
+  formEstudiante.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nombre = inputNombre.value.trim();
+    if (!nombre) return;
+    const fecha = new Date().toLocaleDateString();
+    estudiantes.push({ nombre, fecha, contador: 0 });
+    guardarEstudiantes();
+    renderizarEstudiantes();
+    inputNombre.value = "";
+  });
+
+  abrirModalBtn.onclick = () => {
+    if (!datos.hoja1.length) {
+      alert("Aún no se han cargado los estudios. Intenta de nuevo.");
+      return;
+    }
+    modal.style.display = "flex";
+    renderizarEstudiantes();
+  };
+
+  cerrarModalBtn.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
 });
