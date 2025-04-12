@@ -21,6 +21,22 @@
     <div id="botones-container"></div>
   </div>
 
+  <!-- Botón flotante 👥 -->
+  <button id="abrir-modal" title="Gestionar estudiantes">👥</button>
+
+  <!-- Modal de estudiantes -->
+  <div id="modal-estudiantes" class="modal">
+    <div class="modal-contenido">
+      <h2>📋 Lista de Estudiantes</h2>
+      <form id="form-estudiante">
+        <input type="text" id="nombre-estudiante" placeholder="Nombre del estudiante" required />
+        <button type="submit">➕ Agregar</button>
+      </form>
+      <div id="lista-estudiantes"></div>
+      <button id="cerrar-modal" class="volver-btn">Cerrar</button>
+    </div>
+  </div>
+
   <footer>
     <p>Desarrollado por el Ministerio: <a href="https://elviene.org" target="_blank">ELVIENE.ORG</a></p>
   </footer>
