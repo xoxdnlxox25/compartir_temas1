@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (hoja === "hoja2") {
         btnVer.onclick = () => {
           temaGlobalURL = tema.url;
-          mostrarFilaCSV(tema.url, index);
+          mostrarFilaCSV(tema.url, index, estudio.titulo, tema.titulo);
         };
       } else {
         btnVer.onclick = () => window.open(tema.url, "_blank");
@@ -104,8 +104,10 @@ document.addEventListener("DOMContentLoaded", function () {
     container.appendChild(volverBtn);
   }
 
-  function mostrarFilaCSV(url, indexCSV) {
+  function mostrarFilaCSV(url, indexCSV, nombreEstudio = "", nombreTema = "") {
     descripcion.innerHTML = `
+      ${nombreEstudio ? `<div><strong>📚 ${nombreEstudio}</strong></div>` : ""}
+      ${nombreTema ? `<div><strong>📌 ${nombreTema}</strong></div>` : ""}
       <h2>🔍 Buscar respuestas</h2>
       <input type="text" id="buscador" placeholder="Buscar... 🔎" />
     `;
@@ -169,12 +171,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const pregunta = preguntaOriginal.toLowerCase();
       const respuesta = fila[i]?.trim() || "(sin respuesta)";
 
-      // 🔐 Ocultar campos sensibles como teléfono
       if (pregunta.includes("teléfono") || pregunta.includes("telefono") || pregunta.includes("número telefónico")) {
         continue;
       }
 
-      // ⭐ Mostrar puntuación destacada
       if (pregunta.includes("puntuación")) {
         const puntuacion = document.createElement("div");
         puntuacion.className = "detalle-puntuacion";
@@ -253,7 +253,6 @@ document.addEventListener("DOMContentLoaded", function () {
   activarMenu(btnEstudios);
   cargarDatos(() => mostrarEstudiosDesdeHoja("hoja1"));
 
-  // 📦 Función que parsea una línea CSV respetando comas entre comillas
   function parseCSVLine(linea) {
     const resultado = [];
     let actual = '';
