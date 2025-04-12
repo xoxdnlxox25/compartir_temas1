@@ -270,21 +270,31 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* 👥 Botón flotante */
+/* Botón flotante profesional 👥 */
 #abrir-modal {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 25px;
+  right: 25px;
   width: 60px;
   height: 60px;
-  font-size: 1.6rem;
-  background-color: #c49b0f;
-  color: #1e1e1e;
-  border: none;
   border-radius: 50%;
+  background: linear-gradient(145deg, #d4af37, #c49b0f);
+  color: #1e1e1e;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   z-index: 999;
+  transition: all 0.3s ease;
+}
+
+#abrir-modal:hover {
+  box-shadow: 0 0 20px #f1c40f88;
+  transform: translateY(-3px);
+  background: linear-gradient(145deg, #f1c40f, #dcb642);
 }
 
 /* 🪟 Modal */
@@ -361,3 +371,4 @@ footer a:hover {
   border: none;
   font-size: 0.95rem;
 }
+
