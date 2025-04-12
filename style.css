@@ -247,3 +247,22 @@ button:active {
   text-align: center;
   margin-bottom: 2rem;
 }
+footer {
+  background-color: #111;
+  color: #c49b0f;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  border-top: 1px solid #333;
+}
+
+footer a {
+  color: #f1c40f;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
